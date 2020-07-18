@@ -2,9 +2,7 @@ import { VNode } from "snabbdom/vnode";
 
 export type Dispatch<Msg> = (msg: Msg) => void;
 
-export interface Cmd<Msg> {
-  execute: (dispatch: Dispatch<Msg>) => void;
-}
+export type Cmd<Msg> = (dispatch: Dispatch<Msg>) => void;
 
 export interface Component<Initial, Model, Msg> {
   init: (initial: Initial) => [Model, Cmd<Msg>];

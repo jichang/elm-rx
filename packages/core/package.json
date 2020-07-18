@@ -2,7 +2,7 @@
   "name": "@elm-rx/core",
   "version": "1.0.0",
   "description": "",
-  "main": "./dist/index.js",
+  "main": "./src/index.ts",
   "scripts": {
     "build": "tsc --build tsconfig.json",
     "basic": "parcel ./examples/basic/index.html",
