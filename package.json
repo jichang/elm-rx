@@ -1,24 +1,7 @@
 {
-  "name": "elm-rx",
-  "version": "1.0.0",
-  "description": "",
-  "main": "./dist/index.js",
-  "scripts": {
-    "build": "tsc --build tsconfig.json",
-    "basic": "parcel ./examples/basic/index.html",
-    "nested": "parcel ./examples/nested/index.html",
-    "subscription": "parcel ./examples/subscription/index.html",
-    "navigation": "parcel ./examples/navigation/index.html",
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
-  "author": "",
-  "license": "ISC",
-  "dependencies": {
-    "parcel-bundler": "^1.12.4",
-    "rxjs": "^6.6.0",
-    "snabbdom": "^0.7.4"
-  },
+  "name": "root",
+  "private": true,
   "devDependencies": {
-    "typescript": "^3.9.7"
+    "lerna": "^3.20.2"
   }
 }
