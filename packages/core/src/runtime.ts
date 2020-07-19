@@ -1,4 +1,4 @@
-import { Subject } from "rxjs";
+import { Subject, Subscription } from "rxjs";
 import { scan } from "rxjs/operators";
 import { Cmd, Component, Dispatch, IRuntime } from "./types";
 import * as snabbdom from "snabbdom";
@@ -9,9 +9,12 @@ import propsModule from "snabbdom/modules/props";
 import datasetModule from "snabbdom/modules/dataset";
 import eventListenersModule from "snabbdom/modules/eventlisteners";
 import heroModule from "snabbdom/modules/hero";
+import { none } from "./Cmd";
 
 export class Runtime<Initial, Model, Msg>
   implements IRuntime<Initial, Model, Msg> {
+  subscription: Subscription = null;
+
   run(
     rootNode: Element,
     initial: Initial,
@@ -39,7 +42,7 @@ export class Runtime<Initial, Model, Msg>
     let vnode = render(rootNode, view);
 
     const cmdSubscription = cmdSubject.subscribe((cmd) => {
-      cmd.execute(dispatch);
+      cmd(dispatch);
     });
 
     const msgSubscription = msgSubject
@@ -55,9 +58,23 @@ export class Runtime<Initial, Model, Msg>
       .subscribe((model) => {
         let view = component.view(model)(dispatch);
         vnode = render(vnode, view);
+
+        if (this.subscription) {
+          this.subscription.unsubscribe();
+        }
+
+        this.subscription = component.subscriptions(model).subscribe((msg) => {
+          msgSubject.next(msg);
+        });
       });
 
     cmdSubject.next(cmd);
+
+    if (component.subscriptions) {
+      this.subscription = component.subscriptions(model).subscribe((msg) => {
+        msgSubject.next(msg);
+      });
+    }
 
     return {
       stop: () => {
